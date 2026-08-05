@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        <h1>Bulk Downloader</h1>
+      </div>
+      <button id="scan-btn" class="icon-button" title="Rescan Page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Scanning Status Bar -->
+    <div id="status-bar" class="status-bar hidden">
+      <span class="spinner"></span>
+      <span id="status-text">Scanning tab for files...</span>
+    </div>
+
+    <!-- Filter Pill Bar -->
+    <section class="filters-container">
+      <div class="filters-scroll">
+        <label class="filter-pill filter-pdf" for="filter-pdf">
+          <input type="checkbox" id="filter-pdf" checked>
+          <span class="pill-badge">PDFs (<span id="count-pdf">0</span>)</span>
+        </label>
+        <label class="filter-pill filter-image" for="filter-image">
+          <input type="checkbox" id="filter-image" checked>
+          <span class="pill-badge">Images (<span id="count-image">0</span>)</span>
+        </label>
+        <label class="filter-pill filter-word" for="filter-word">
+          <input type="checkbox" id="filter-word" checked>
+          <span class="pill-badge">Word (<span id="count-word">0</span>)</span>
+        </label>
+        <label class="filter-pill filter-excel" for="filter-excel">
+          <input type="checkbox" id="filter-excel" checked>
+          <span class="pill-badge">Excel (<span id="count-excel">0</span>)</span>
+        </label>
+        <label class="filter-pill filter-data" for="filter-data">
+          <input type="checkbox" id="filter-data" checked>
+          <span class="pill-badge">Data (<span id="count-data">0</span>)</span>
+        </label>
+        <label class="filter-pill filter-doc" for="filter-doc">
+          <input type="checkbox" id="filter-doc" checked>
+          <span class="pill-badge">Docs (<span id="count-doc">0</span>)</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Discovered Files Info & Select All -->
+    <div class="control-header">
+      <label class="select-all-label">
+        <input type="checkbox" id="select-all" checked>
+        <span>Select All (<span id="selected-count">0</span>/<span id="total-count">0</span>)</span>
+      </label>
+    </div>
+
+    <!-- Main List View -->
+    <main class="list-container">
+      <div id="empty-state" class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
+        <p>No downloadable files or action buttons found on this page.</p>
+        <button id="empty-scan-btn" class="btn btn-secondary">Rescan Tab</button>
+      </div>
+      <ul id="file-list" class="file-list hidden">
+        <!-- Discovered files will be populated dynamically -->
+      </ul>
+    </main>
+
+    <!-- Sticky Footer Actions -->
+    <footer class="app-footer">
+      <button id="download-individual" class="btn btn-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Individual Download</span>
+      </button>
+      <button id="download-zip" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+          <rect x="8" y="3" width="8" height="4" rx="1" />
+        </svg>
+        <span>Download as ZIP</span>
+      </button>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="jszip.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

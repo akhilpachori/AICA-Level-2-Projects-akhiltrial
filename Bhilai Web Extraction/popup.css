@@ -1,0 +1,486 @@
+/* --- Global Design System & Variables --- */
+:root {
+  --bg-main: #0B0F19;
+  --bg-card: rgba(22, 30, 49, 0.65);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  
+  /* Category Colors (HSL / Vibrant and curated) */
+  --color-pdf: #EF4444;      /* Red */
+  --color-image: #3B82F6;    /* Blue */
+  --color-word: #2563EB;     /* Dark Blue */
+  --color-excel: #10B981;    /* Green */
+  --color-data: #F59E0B;     /* Orange */
+  --color-doc: #8B5CF6;      /* Purple */
+
+  /* Status Colors */
+  --status-pending: #6B7280;
+  --status-fetching: #3B82F6;
+  --status-done: #10B981;
+  --status-error: #EF4444;
+
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  width: 420px;
+  height: 560px;
+  overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 60%);
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-glass);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-image);
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+}
+
+.logo-area h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #FFF, #9CA3AF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.1);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  color: #93C5FD;
+  animation: fadeIn var(--transition-fast) forwards;
+}
+
+.status-bar.hidden {
+  display: none;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(147, 197, 253, 0.2);
+  border-top-color: #93C5FD;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollable Category Filter Pills */
+.filters-container {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid var(--border-glass);
+  overflow-x: hidden;
+}
+
+.filters-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+/* Custom Scrollbar for Filters */
+.filters-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+.filters-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.filters-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+/* Pill Checkboxes */
+.filter-pill {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.filter-pill input {
+  display: none;
+}
+
+.pill-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+/* Selected states with exact requested colors */
+.filter-pill:has(input:checked) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filter-pdf:has(input:checked) {
+  border-color: var(--color-pdf);
+  background: rgba(239, 68, 68, 0.12);
+}
+.filter-pdf:has(input:checked) .pill-badge {
+  color: var(--color-pdf);
+}
+
+.filter-image:has(input:checked) {
+  border-color: var(--color-image);
+  background: rgba(59, 130, 246, 0.12);
+}
+.filter-image:has(input:checked) .pill-badge {
+  color: var(--color-image);
+}
+
+.filter-word:has(input:checked) {
+  border-color: var(--color-word);
+  background: rgba(37, 99, 237, 0.12);
+}
+.filter-word:has(input:checked) .pill-badge {
+  color: #60A5FA;
+}
+
+.filter-excel:has(input:checked) {
+  border-color: var(--color-excel);
+  background: rgba(16, 185, 129, 0.12);
+}
+.filter-excel:has(input:checked) .pill-badge {
+  color: var(--color-excel);
+}
+
+.filter-data:has(input:checked) {
+  border-color: var(--color-data);
+  background: rgba(245, 158, 11, 0.12);
+}
+.filter-data:has(input:checked) .pill-badge {
+  color: var(--color-data);
+}
+
+.filter-doc:has(input:checked) {
+  border-color: var(--color-doc);
+  background: rgba(139, 92, 246, 0.12);
+}
+.filter-doc:has(input:checked) .pill-badge {
+  color: var(--color-doc);
+}
+
+/* Control Header (Select All) */
+.control-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.01);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.select-all-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.select-all-label input[type="checkbox"],
+.file-item input[type="checkbox"] {
+  accent-color: var(--color-image);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* File list container */
+.list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 20px;
+  position: relative;
+}
+
+/* Custom Scrollbar for file list */
+.list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.list-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.list-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px 20px;
+}
+
+.empty-state svg {
+  width: 48px;
+  height: 48px;
+  color: rgba(255, 255, 255, 0.15);
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* File List Items */
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+}
+
+.file-list.hidden {
+  display: none;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  transition: all var(--transition-fast);
+}
+
+.file-item:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.file-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Category indicator pill */
+.category-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+}
+
+.badge-pdf { background: rgba(239, 68, 68, 0.15); color: #FCA5A5; }
+.badge-image { background: rgba(59, 130, 246, 0.15); color: #93C5FD; }
+.badge-word { background: rgba(37, 99, 237, 0.15); color: #93C5FD; }
+.badge-excel { background: rgba(16, 185, 129, 0.15); color: #A7F3D0; }
+.badge-data { background: rgba(245, 158, 11, 0.15); color: #FDE68A; }
+.badge-doc { background: rgba(139, 92, 246, 0.15); color: #DDD6FE; }
+
+/* Origin indicator badge */
+.origin-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+}
+
+.origin-badge.secure {
+  border-color: rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.05);
+  color: #FDE68A;
+}
+
+/* Status Indicator */
+.status-pill {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 60px;
+}
+
+.status-pending { background: rgba(107, 114, 128, 0.15); color: #D1D5DB; }
+.status-fetching { background: rgba(59, 130, 246, 0.15); color: #93C5FD; }
+.status-done { background: rgba(16, 185, 129, 0.2); color: #34D399; }
+.status-error { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; }
+
+/* Sticky Footer Actions */
+.app-footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-glass);
+  background: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+/* Buttons */
+.btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 550;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: #FFF;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #60A5FA, #2563EB);
+  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Icon Buttons (Header actions) */
+.icon-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.icon-button:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}

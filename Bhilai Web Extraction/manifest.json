@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Bulk Downloader",
+  "version": "1.0",
+  "description": "Bulk download files and action-buttons from active tabs, supporting SPAs and authenticated portals.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
